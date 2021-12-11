@@ -1,0 +1,28 @@
+#game_title {
+  font-size: x-large;
+  text-align: center;
+}
+
+#div_board {
+  border: 1px solid;
+  background-color: aliceblue;
+  min-height: 100px;
+  min-width: 100px;
+}
+
+.cells {
+  width: 50px;
+  height: 50px;
+}
+
+#span_player_name {
+  align-content: center;
+  border: 1px solid;
+  background-color: aquamarine;
+}
+.winning_cells {
+  font-size: xx-large;
+  font-weight: bold;
+  /* TODO: */
+  /* background-color: blue; */
+}
