@@ -178,30 +178,18 @@ function click_on_cell(ev) {
   let was_a_winner = false;
   if (num_of_turns > 2) {
     was_a_winner = check_if_win_game();
-
-    if (was_a_winner) {
-      // TODO: to check if can be done without timeout
-      // note: a delay so the win celes will update style before aleret
-      setTimeout(() => {
-        alert(`The winner is: ${players[current_player]}`);
-      }, 10);
-    } else {
-      if (check_if_game_finished()) {
-        if (
-          confirm("Game Over. No one Won\nDo you want to play another game?")
-        ) {
-          reset_game();
-          return;
-        }
+  }
+  if (was_a_winner) {
+    alert(`The winner is: ${players[current_player]}`);
+  } else {
+    if (check_if_game_finished()) {
+      if (confirm("Game Over. No one Won\nDo you want to play another game?")) {
+        reset_game();
+        return;
       }
     }
+    show_current_player_in_span();
   }
-  console.log("CCCs");
-  console.log(current_player);
-  current_player = calcuate_current_player();
-  console.log(current_player);
-
-  show_current_player_in_span();
 }
 
 // **********
@@ -222,9 +210,9 @@ function clear_elements_from_div(id_to_clear) {
 }
 
 function show_current_player_in_span() {
-  document.getElementById(
-    "span_player_name"
-  ).innerHTML = `Player turn: ${players[current_player]}`;
+  document.getElementById("span_player_name").innerHTML = `Player turn: ${
+    players[calcuate_current_player()]
+  }`;
 }
 // **********
 // Level 50: Side functions
