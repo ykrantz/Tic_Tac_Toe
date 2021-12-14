@@ -20,60 +20,120 @@ let num_of_rows = 3;
 let game_array_baord = [];
 let num_of_turns = 0;
 
-let players = ["a", "b"];
+let players = [];
 let current_player = 0;
-let numbers_of_players = players.length;
+let numbers_of_players = 2;
+
+let timer_seconds = 0;
+let $span_timer = document.getElementById("span_timer");
+
+let timer_interval = "";
 
 // **********
 // Level 20: Main
 // **********
 
-// create_new_game();
-
-// create_game_array_baord(num_of_rows);
 const $board = document.getElementById("div_board");
 const $main_buttons_div = document.getElementById("main_buttons_div");
-$board.addEventListener("click", click_on_cell);
-// show_current_player_in_span();
-// set_board_of_cells();
-set_buttons();
+const $span_main_messege = document.getElementById("span_main_messege");
+const $span_player_name = document.getElementById("span_player_name");
+const $span_secondery_messege = document.getElementById(
+  "span_secondery_messege"
+);
 
+$board.addEventListener("click", click_on_cell);
+
+set_buttons();
+set_number_of_rows_buttton();
 reset_game();
+// timeout so the board will load before prompt
+setTimeout(() => {
+  get_players_names();
+}, 500);
 
 // **********
 // Level 30: Primery Functions
 // **********
+
+function set_number_of_rows_buttton() {
+  const $input_number_of_rows = document.createElement("INPUT");
+  $input_number_of_rows.type = "number";
+  $input_number_of_rows.min = 3;
+  $input_number_of_rows.max = 10;
+  $input_number_of_rows.value = 3;
+  $input_number_of_rows.id = "input_number_of_rows";
+
+  const $div_number_of_rows = document.getElementById("div_number_of_rows");
+  $div_number_of_rows.append($input_number_of_rows);
+
+  let $button_number_of_rows = document.createElement("BUTTON");
+  $button_number_of_rows.innerHTML = "Change number of rows/columns";
+  $button_number_of_rows.addEventListener("click", change_row_on_board);
+
+  $div_number_of_rows.append($button_number_of_rows);
+}
 function set_buttons() {
+  const $div1 = document.createElement("div1");
+
   const $reset_game = document.createElement("button");
   $reset_game.innerHTML = "reset game";
+  $reset_game.style.backgroundColor = "yellow";
   $reset_game.className = "main_buttons";
   $reset_game.addEventListener("click", reset_game);
-  $main_buttons_div.append($reset_game);
+  $div1.append($reset_game);
 
   const $delete_last_move = document.createElement("button");
   $delete_last_move.innerHTML = "delete last move";
+  $delete_last_move.style.backgroundColor = "pink";
+  $delete_last_move.id = "delete_last_move";
+  // $delete_last_move.style.display = "inline";
   $delete_last_move.className = "main_buttons";
   $delete_last_move.addEventListener("click", delete_last_move);
-  $main_buttons_div.append($delete_last_move);
+  $div1.append($delete_last_move);
+  $div1.className = "class_buttons";
 
+  const $div2 = document.createElement("div3");
+  const $change_players_name = document.createElement("button");
+  $change_players_name.innerHTML = "change players name";
+  $change_players_name.style.backgroundColor = "darkgoldenrod";
+  $change_players_name.className = "main_buttons";
+  $change_players_name.addEventListener("click", change_players_name);
+  $div2.append($change_players_name);
+  $div2.className = "class_buttons";
+
+  const $div3 = document.createElement("div2");
   const $show_highest_score = document.createElement("button");
   $show_highest_score.innerHTML = "show highest score";
+  $show_highest_score.style.backgroundColor = "cadetblue";
   $show_highest_score.className = "main_buttons";
   $show_highest_score.addEventListener("click", show_highest_score);
-  $main_buttons_div.append($show_highest_score);
+  $div3.append($show_highest_score);
 
+  const $reset_highest_score = document.createElement("button");
+  $reset_highest_score.innerHTML = "reset highest score";
+  $reset_highest_score.className = "main_buttons";
+  $reset_highest_score.addEventListener("click", reset_highest_score);
+  $div3.append($reset_highest_score);
+  $div3.className = "class_buttons";
+
+  const $div4 = document.createElement("div4");
   const $save_game = document.createElement("button");
   $save_game.innerHTML = "save game";
+  $save_game.style.backgroundColor = "cyan";
   $save_game.className = "main_buttons";
-  $save_game.addEventListener("click", save_game);
+  $div4.addEventListener("click", save_game);
 
-  $main_buttons_div.append($save_game);
+  $div4.append($save_game);
 
   const $load_game = document.createElement("button");
   $load_game.innerHTML = "load game";
+  $load_game.style.backgroundColor = "coral";
   $load_game.className = "main_buttons";
   $load_game.addEventListener("click", load_game);
-  $main_buttons_div.append($load_game);
+  $div4.append($load_game);
+  $div4.className = "class_buttons";
+
+  $main_buttons_div.append($div1, $div2, $div3, $div4);
 }
 
 function create_game_array_baord(num_of_rows) {
@@ -93,6 +153,7 @@ function set_board_of_cells() {
     let $div_row_on_board = document.createElement("div");
     $div_row_on_board.id = `row_${idx_row}`;
     $div_row_on_board.dataset.row = idx_row;
+    $div_row_on_board.style.display = "flex";
     row.forEach((v, idx_column) => {
       let $cell_on_board = document.createElement("button");
       $cell_on_board.className = "cells";
@@ -110,42 +171,92 @@ function set_board_of_cells() {
 // **********
 // Level 31: Event Functions
 // **********
-
-function reset_game() {}
+function get_players_names() {
+  players = [];
+  for (i = 0; i < 2; i++) {
+    let player = get_string(`your name player number ${i + 1}:`);
+    players.push(player);
+    show_current_player_in_span();
+  }
+}
+function change_row_on_board() {
+  alert("Board will reset and change");
+  num_of_rows = document.getElementById("input_number_of_rows").value;
+  reset_game();
+}
 
 function delete_last_move() {
-  // TODO:
-  // debugger;
   let last_cell_preesed = moves_arr.pop();
-  if (last_cell_preesed) {
-    reset_cell_value_and_text(last_cell_preesed[0], last_cell_preesed[1]);
-    num_of_turns--;
-  } else {
-    alert("There is no turn to cancel");
+
+  reset_cell_value_and_text(last_cell_preesed[0], last_cell_preesed[1]);
+  num_of_turns--;
+  show_current_player_in_span();
+
+  if (moves_arr.length == 0) {
+    change_ability_to_delete_last_move(false);
   }
 }
 
 function show_highest_score() {
-  // TODO:
+  if (get_local_highest_score() != Infinity) {
+    alert(`The heighest score is: ${get_local_highest_score()} turns`);
+  } else {
+    alert("No score yet");
+  }
 }
+function reset_highest_score() {
+  localStorage.local_highest_score = "";
+}
+
 function save_game() {
-  // TODO:
+  localStorage.saved_game = JSON.stringify([
+    game_array_baord,
+    players,
+    num_of_turns,
+    moves_arr,
+    timer_seconds,
+  ]);
+  alert("Game was saved");
 }
 function load_game() {
-  // TODO:
+  let last_game = JSON.parse(localStorage.saved_game);
+  game_array_baord = last_game[0];
+  players = last_game[1];
+  num_of_turns = last_game[2];
+  moves_arr = last_game[3];
+  timer_seconds = last_game[4];
+  $span_main_messege.innerHTML = "Welcome to game";
+  $span_main_messege.style.color = "black";
+  show_current_player_in_span();
+  set_board_of_cells();
+  alert("Game was loaded");
 }
 
 function reset_game() {
   num_of_turns = 0;
-
+  current_player = 0;
+  // in the first turn can;t delete last move. after presing cells it wil be eneble
+  change_ability_to_delete_last_move(false);
+  $span_main_messege.innerHTML = "Welcome to game";
+  $span_main_messege.style.color = "black";
+  $span_secondery_messege.innerHTML = "";
+  $span_secondery_messege.style.color = "black";
   create_game_array_baord(num_of_rows);
 
+  // players.push(aleret);
   show_current_player_in_span();
   set_board_of_cells();
+
+  clearInterval(timer_interval);
+  reset_timer();
+}
+
+function change_players_name() {
+  get_players_names();
+  reset_game();
 }
 
 function click_on_cell(ev) {
-  // TODO: fix the button theat moves down when prees
   let $button_clicked = ev.target;
   try {
     if ($button_clicked.tagName != "BUTTON")
@@ -159,7 +270,7 @@ function click_on_cell(ev) {
   }
 
   num_of_turns++;
-
+  change_ability_to_delete_last_move(true);
   moves_arr.push([
     Number($button_clicked.dataset.row),
     Number($button_clicked.dataset.column),
@@ -180,26 +291,27 @@ function click_on_cell(ev) {
     was_a_winner = check_if_win_game();
 
     if (was_a_winner) {
-      // TODO: to check if can be done without timeout
-      // note: a delay so the win celes will update style before aleret
-      setTimeout(() => {
-        alert(`The winner is: ${players[current_player]}`);
-      }, 10);
+      $span_main_messege.innerHTML = `The winner is: ${players[current_player]}`;
+      if (update_score_if_neccecery()) {
+        $span_secondery_messege.innerHTML = `Congratulation player ${current_player}: ${players[current_player]}.<br> You made a new record.<br> Your record is: ${num_of_turns}  turns<br>`;
+      }
+      $span_main_messege.style.color = "blue";
+      $span_secondery_messege.style.color = "darkmagenta";
+
+      clearInterval(timer_interval);
+      return;
     } else {
       if (check_if_game_finished()) {
-        if (
-          confirm("Game Over. No one Won\nDo you want to play another game?")
-        ) {
-          reset_game();
-          return;
-        }
+        $span_main_messege.innerHTML = "Game over!";
+        change_ability_to_press_cells(false);
+        change_ability_to_delete_last_move(false);
+        clearInterval(timer_interval);
+        return;
       }
     }
   }
-  console.log("CCCs");
-  console.log(current_player);
+
   current_player = calcuate_current_player();
-  console.log(current_player);
 
   show_current_player_in_span();
 }
@@ -207,6 +319,14 @@ function click_on_cell(ev) {
 // **********
 // Level 40: Suport Functions
 // **********
+
+function reset_timer() {
+  timer_interval = setInterval(() => {
+    $span_timer.innerHTML = `Timer: ${timer_seconds}  (sec)`;
+    timer_seconds++;
+  }, 1000);
+  timer_seconds = 0;
+}
 
 function reset_cell_value_and_text(row, column) {
   game_array_baord[row][column] = "";
@@ -222,16 +342,41 @@ function clear_elements_from_div(id_to_clear) {
 }
 
 function show_current_player_in_span() {
-  document.getElementById(
-    "span_player_name"
-  ).innerHTML = `Player turn: ${players[current_player]}`;
+  if (players.length > 0) {
+    $span_player_name.innerHTML = `<b>Player ${current_player + 1} turn:</b> ${
+      players[current_player]
+    }`;
+  } else {
+    $span_player_name.innerHTML = `<b>Player turn:</b>`;
+  }
 }
 // **********
 // Level 50: Side functions
 // **********
+
+function update_score_if_neccecery() {
+  if (num_of_turns < get_local_highest_score()) {
+    update_local_highest_score(num_of_turns);
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function get_local_highest_score() {
+  if (localStorage.local_highest_score) {
+    return JSON.parse(localStorage.local_highest_score);
+  } else {
+    return Infinity;
+  }
+}
+
+function update_local_highest_score(score_to_update) {
+  localStorage.local_highest_score = JSON.stringify(score_to_update);
+}
+
 let flag_if_some_won = false;
 function check_if_win_game() {
-  // TODO: optinal- to set a local win flag. so we don;t neetd to use a gllobal flag
   flag_if_some_won = false;
   check_if_row_win();
   check_if_column_win();
@@ -240,6 +385,7 @@ function check_if_win_game() {
 
   if (flag_if_some_won) {
     change_ability_to_press_cells(false);
+    change_ability_to_delete_last_move(false);
   }
   return flag_if_some_won;
 }
@@ -368,6 +514,43 @@ function change_ability_to_press_cells(flag_enabling = true) {
   }
 }
 
+function change_ability_to_delete_last_move(flag_enabling = true) {
+  let $delete_last_move = document.getElementById("delete_last_move");
+
+  if (flag_enabling) {
+    $delete_last_move.disabled = false;
+  } else {
+    $delete_last_move.disabled = true;
+  }
+}
+
 // **********
-// Level 60: Validation Functions
+// Level 60: Validation  and prompt Functions
 // *********
+
+function get_string(str_type) {
+  let str = "";
+  let flag = true;
+  do {
+    str = prompt(`Please enter ${str_type}`);
+    flag = check_valid_string(str);
+  } while (flag == false);
+  return str;
+}
+
+function check_valid_string(str) {
+  try {
+    if (String(str).trim() == "" || str == null || str == undefined)
+      throw "empty";
+    if (String(str).search(/\d/) >= 0) throw "contain a number";
+    // only letters or space allowed
+    if (String(str).search(/^[a-zA-Z ]+$/) < 0)
+      throw "contain char that isn't a letter";
+    if (String(str).length > 20) throw "string more than 20 char";
+  } catch (err) {
+    console.log(err);
+    eror_log.push([err, "string eror"]);
+    return false;
+  }
+  return true;
+}

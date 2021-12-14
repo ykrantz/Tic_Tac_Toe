@@ -4,10 +4,12 @@
 }
 
 #div_board {
-  border: 1px solid;
-  background-color: aliceblue;
-  min-height: 100px;
-  min-width: 100px;
+  /* border: 1px solid; */
+  /* background-color: aliceblue; */
+  /* min-height: 100px; */
+  /* min-width: 100px; */
+  position: relative;
+  left: 200px;
 }
 
 .cells {
@@ -16,9 +18,12 @@
 }
 
 #span_player_name {
+  /* padding-top: 10px; */
+  /* margin-block-start: 100px; */
   align-content: center;
   border: 1px solid;
   background-color: aquamarine;
+  font-size: large;
 }
 .winning_cells {
   width: 50px;
@@ -32,4 +37,26 @@
 .main_buttons {
   background-color: lightgreen;
   border-radius: 30%;
+  height: 40px;
+  font-weight: bold;
+}
+
+.class_buttons {
+  display: block;
+}
+#span_main_messege {
+  font-size: xx-large;
+  color: black;
+}
+
+#span_secondery_messege {
+  font-size: xx-large;
+  color: black;
+}
+
+#span_messege {
+  min-height: 100px;
+}
+
+#sapn_timer {
 }
