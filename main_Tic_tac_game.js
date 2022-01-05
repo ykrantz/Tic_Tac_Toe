@@ -9,7 +9,7 @@
 // 55: help functions
 //  56: style set Functions
 // 60: Validation Functions
-// +++++++++++++++++++++
+// ++++++++++++++++++++++
 
 // **********
 // Level 10: defining main variable and structre
