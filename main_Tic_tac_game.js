@@ -10,7 +10,7 @@
 //  56: style set Functions
 // 60: Validation Functions
 // ++++++++++++++++++++++
-// 
+//
 
 // **********
 // Level 10: defining main variable and structre
@@ -69,6 +69,8 @@ function set_number_of_rows_buttton() {
 
   let $button_number_of_rows = document.createElement("BUTTON");
   $button_number_of_rows.innerHTML = "Change number of rows/columns";
+  $button_number_of_rows.className = "main_buttons";
+  $button_number_of_rows.style.backgroundColor = "cadetblue";
   $button_number_of_rows.addEventListener("click", change_row_on_board);
 
   $div_number_of_rows.append($button_number_of_rows);
@@ -191,8 +193,10 @@ function delete_last_move() {
 
   reset_cell_value_and_text(last_cell_preesed[0], last_cell_preesed[1]);
   num_of_turns--;
+  current_player = calcuate_current_player();
   show_current_player_in_span();
-
+  // TODO:
+  console.log(current_player);
   if (moves_arr.length == 0) {
     change_ability_to_delete_last_move(false);
   }
@@ -294,7 +298,11 @@ function click_on_cell(ev) {
     if (was_a_winner) {
       $span_main_messege.innerHTML = `The winner is: ${players[current_player]}`;
       if (update_score_if_neccecery()) {
-        $span_secondery_messege.innerHTML = `Congratulation player ${current_player}: ${players[current_player]}.<br> You made a new record.<br> Your record is: ${num_of_turns}  turns<br>`;
+        $span_secondery_messege.innerHTML = `\nCongratulation player ${
+          current_player + 1
+        }: ${
+          players[current_player]
+        }.<br> You made a new record.<br> Your record is: ${num_of_turns}  turns<br>`;
       }
       $span_main_messege.style.color = "blue";
       $span_secondery_messege.style.color = "darkmagenta";
@@ -323,7 +331,7 @@ function click_on_cell(ev) {
 
 function reset_timer() {
   timer_interval = setInterval(() => {
-    $span_timer.innerHTML = `Timer: ${timer_seconds}  (sec)`;
+    $span_timer.innerHTML = `<b>Timer:</b> ${timer_seconds}  (sec)`;
     timer_seconds++;
   }, 1000);
   timer_seconds = 0;
@@ -533,9 +541,11 @@ function get_string(str_type) {
   let str = "";
   let flag = true;
   do {
-    str = prompt(`Please enter ${str_type}`);
+    str = prompt(
+      `${flag !== true ? "Eror: " + flag + "\n" : ""}Please enter ${str_type}`
+    );
     flag = check_valid_string(str);
-  } while (flag == false);
+  } while (flag !== true);
   return str;
 }
 
@@ -546,12 +556,13 @@ function check_valid_string(str) {
     if (String(str).search(/\d/) >= 0) throw "contain a number";
     // only letters or space allowed
     if (String(str).search(/^[a-zA-Z ]+$/) < 0)
-      throw "contain char that isn't a letter";
+      throw "contain char that isn't an english letter";
     if (String(str).length > 20) throw "string more than 20 char";
   } catch (err) {
     console.log(err);
     eror_log.push([err, "string eror"]);
-    return false;
+    // return false;
+    return err;
   }
   return true;
 }
