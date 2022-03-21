@@ -21,7 +21,7 @@ let num_of_rows = 3;
 let game_array_baord = [];
 let num_of_turns = 0;
 
-let players = [];
+let players = ["Player A", "Player B"];
 let current_player = 0;
 let numbers_of_players = 2;
 
@@ -47,10 +47,16 @@ $board.addEventListener("click", click_on_cell);
 set_buttons();
 set_number_of_rows_buttton();
 reset_game();
-// timeout so the board will load before prompt
-setTimeout(() => {
-  get_players_names();
-}, 500);
+show_current_player_in_span();
+
+// if want to define name in satrt of game.
+//  so define alsotimeout so the board will load before prompt
+// by defult, there is name of player a and player b
+
+// setTimeout(() => {
+//   get_players_names();
+// }, 500);
+// players.push(player);
 
 // **********
 // Level 30: Primery Functions
@@ -95,14 +101,16 @@ function set_buttons() {
   $div1.append($delete_last_move);
   $div1.className = "class_buttons";
 
-  const $div2 = document.createElement("div3");
+  const $div_playres = document.getElementById("div_playres");
+
   const $change_players_name = document.createElement("button");
   $change_players_name.innerHTML = "change players name";
   $change_players_name.style.backgroundColor = "darkgoldenrod";
   $change_players_name.className = "main_buttons";
   $change_players_name.addEventListener("click", change_players_name);
-  $div2.append($change_players_name);
-  $div2.className = "class_buttons";
+
+  $div_playres.append($change_players_name);
+  $div_playres.className = "class_buttons";
 
   const $div3 = document.createElement("div2");
   const $show_highest_score = document.createElement("button");
@@ -124,7 +132,7 @@ function set_buttons() {
   $save_game.innerHTML = "save game";
   $save_game.style.backgroundColor = "cyan";
   $save_game.className = "main_buttons";
-  $div4.addEventListener("click", save_game);
+  $save_game.addEventListener("click", save_game);
 
   $div4.append($save_game);
 
@@ -136,7 +144,7 @@ function set_buttons() {
   $div4.append($load_game);
   $div4.className = "class_buttons";
 
-  $main_buttons_div.append($div1, $div2, $div3, $div4);
+  $main_buttons_div.append($div1, $div3, $div4);
 }
 
 function create_game_array_baord(num_of_rows) {
@@ -183,9 +191,15 @@ function get_players_names() {
   }
 }
 function change_row_on_board() {
-  alert("Board will reset and change");
-  num_of_rows = document.getElementById("input_number_of_rows").value;
-  reset_game();
+  if (num_of_rows != document.getElementById("input_number_of_rows").value) {
+    alert(`Board will reset and change to ${num_of_rows} rows/columns`);
+    num_of_rows = document.getElementById("input_number_of_rows").value;
+    reset_game();
+  } else {
+    alert(
+      `Board already has ${num_of_rows}  rows/columns.\n if you want to change it please change the number with the arrows `
+    );
+  }
 }
 
 function delete_last_move() {
@@ -195,7 +209,7 @@ function delete_last_move() {
   num_of_turns--;
   current_player = calcuate_current_player();
   show_current_player_in_span();
-  // TODO:
+
   console.log(current_player);
   if (moves_arr.length == 0) {
     change_ability_to_delete_last_move(false);
@@ -210,7 +224,12 @@ function show_highest_score() {
   }
 }
 function reset_highest_score() {
-  localStorage.local_highest_score = "";
+  if (localStorage.local_highest_score) {
+    alert(`The score : ${localStorage.local_highest_score}  was reset`);
+    localStorage.local_highest_score = "";
+  } else {
+    alert("No score yer to reset");
+  }
 }
 
 function save_game() {
@@ -224,7 +243,12 @@ function save_game() {
   alert("Game was saved");
 }
 function load_game() {
+  if (!localStorage.saved_game) {
+    alert("No game was saved");
+    return;
+  }
   let last_game = JSON.parse(localStorage.saved_game);
+
   game_array_baord = last_game[0];
   players = last_game[1];
   num_of_turns = last_game[2];
@@ -298,16 +322,14 @@ function click_on_cell(ev) {
     if (was_a_winner) {
       $span_main_messege.innerHTML = `The winner is: ${players[current_player]}`;
       if (update_score_if_neccecery()) {
-        $span_secondery_messege.innerHTML = `\nCongratulation player ${
-          current_player + 1
-        }: ${
-          players[current_player]
-        }.<br> You made a new record.<br> Your record is: ${num_of_turns}  turns<br>`;
+        $span_secondery_messege.innerHTML = `\nCongratulation <b> ${players[current_player]} </b>. You made a new record. Your record is:<b> ${num_of_turns}  turns </b>`;
       }
       $span_main_messege.style.color = "blue";
       $span_secondery_messege.style.color = "darkmagenta";
 
       clearInterval(timer_interval);
+
+      game_was_finished();
       return;
     } else {
       if (check_if_game_finished()) {
@@ -315,6 +337,8 @@ function click_on_cell(ev) {
         change_ability_to_press_cells(false);
         change_ability_to_delete_last_move(false);
         clearInterval(timer_interval);
+
+        game_was_finished();
         return;
       }
     }
@@ -329,6 +353,14 @@ function click_on_cell(ev) {
 // Level 40: Suport Functions
 // **********
 
+function game_was_finished() {
+  setTimeout(() => {
+    let ans = confirm("Game finised. Do you want to play again?");
+    if (ans) {
+      reset_game();
+    }
+  }, 100);
+}
 function reset_timer() {
   timer_interval = setInterval(() => {
     $span_timer.innerHTML = `<b>Timer:</b> ${timer_seconds}  (sec)`;
@@ -542,7 +574,9 @@ function get_string(str_type) {
   let flag = true;
   do {
     str = prompt(
-      `${flag !== true ? "Eror: " + flag + "\n" : ""}Please enter ${str_type}`
+      `${
+        flag !== true ? `Eror: ` + flag + `` + "\n\n" : ""
+      } Please enter ${str_type}`
     );
     flag = check_valid_string(str);
   } while (flag !== true);
