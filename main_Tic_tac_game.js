@@ -183,11 +183,14 @@ function set_board_of_cells() {
 // Level 31: Event Functions
 // **********
 function get_players_names() {
-  players = [];
   for (i = 0; i < 2; i++) {
     let player = get_string(`your name player number ${i + 1}:`);
-    players.push(player);
-    show_current_player_in_span();
+    if (player) {
+      players[i] = player;
+      show_current_player_in_span();
+    } else {
+      return;
+    }
   }
 }
 function change_row_on_board() {
@@ -577,9 +580,10 @@ function get_string(str_type) {
   do {
     str = prompt(
       `${
-        flag !== true ? `Eror: ` + flag + `` + "\n\n" : ""
+        flag !== true ? `*** Eror: ` + flag + ` ***` + "\n\n" : ""
       } Please enter ${str_type}`
     );
+
     flag = check_valid_string(str);
   } while (flag !== true);
   return str;
@@ -587,7 +591,14 @@ function get_string(str_type) {
 
 function check_valid_string(str) {
   try {
-    if (String(str).trim() == "" || str == null || str == undefined)
+    if (
+      String(str).trim() == ""
+
+      // if  don't want to except cancel so need also the null condition
+      //  || str == null
+      //  ||
+      // str == undefined
+    )
       throw "empty";
     if (String(str).search(/\d/) >= 0) throw "contain a number";
     // only letters or space allowed
