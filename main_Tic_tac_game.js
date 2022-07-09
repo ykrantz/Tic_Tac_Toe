@@ -75,7 +75,7 @@ function set_number_of_rows_buttton() {
 
   let $button_number_of_rows = document.createElement("BUTTON");
   $button_number_of_rows.innerHTML = "Change number of rows/columns";
-  $button_number_of_rows.className = "main_buttons";
+  $button_number_of_rows.className = "main_buttons changeRowsButton";
   $button_number_of_rows.style.backgroundColor = "cadetblue";
   $button_number_of_rows.addEventListener("click", change_row_on_board);
 
@@ -254,7 +254,8 @@ function load_game() {
   num_of_turns = last_game[2];
   moves_arr = last_game[3];
   timer_seconds = last_game[4];
-  $span_main_messege.innerHTML = "Welcome to game";
+  // $span_main_messege.innerHTML = "Welcome to game";
+  $span_main_messege.innerHTML = "";
   $span_main_messege.style.color = "black";
   show_current_player_in_span();
   set_board_of_cells();
@@ -266,7 +267,8 @@ function reset_game() {
   current_player = 0;
   // in the first turn can;t delete last move. after presing cells it wil be eneble
   change_ability_to_delete_last_move(false);
-  $span_main_messege.innerHTML = "Welcome to game";
+  $span_main_messege.innerHTML = "";
+  // $span_main_messege.innerHTML = "Welcome to game";
   $span_main_messege.style.color = "black";
   $span_secondery_messege.innerHTML = "";
   $span_secondery_messege.style.color = "black";
@@ -363,7 +365,7 @@ function game_was_finished() {
 }
 function reset_timer() {
   timer_interval = setInterval(() => {
-    $span_timer.innerHTML = `<b>Timer:</b> ${timer_seconds}  (sec)`;
+    $span_timer.innerHTML = `<b>Timer:</b> <br/>${timer_seconds}  (sec)`;
     timer_seconds++;
   }, 1000);
   timer_seconds = 0;

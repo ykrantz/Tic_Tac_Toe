@@ -1,6 +1,51 @@
+
+body {
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.5)
+    ),
+    url("./images/toy-2561392.jpg");
+
+  background-size: cover;
+  margin-left: 10%;
+  text-align: center;
+  justify-content:center ;
+}
+
+#headerDiv{
+  display: flex;
+  text-align: center;
+  justify-content:center ;
+}
 #game_title {
   font-size: 30px;
   text-align: center;
+  margin-right: 10%;
+}
+#span_timer {
+  height: fit-content;
+position: absolute;
+right: 5%;
+  display: block;
+   /* margin-top: 50px; */
+   /* margin-left: 500px; */
+   /* width: 10%; */
+   border: 1px solid;
+   padding-right: 10px;
+   padding-top: 10px;
+   padding-bottom: 10px;
+   padding-left: 10px;
+   border-radius: 10px;
+   background-color: coral;
+ }
+/* #welcomeTimer{
+  display: flex;
+  text-align: center;
+  justify-content:center ;
+} */
+
+#welcomeTitle{
+  margin-right: 10%;
 }
 
 #div_board {
@@ -8,8 +53,14 @@
   /* background-color: aliceblue; */
   /* min-height: 100px; */
   /* min-width: 100px; */
-  position: relative;
-  left: 200px;
+  /* position: relative;
+  left: 200px; */
+  /* margin-left: 100px; */
+  display: inline-block;
+    text-align: center;
+  justify-content:center ;
+  align-items: center;
+ 
 }
 
 .cells {
@@ -65,33 +116,93 @@
 }
 
 #span_messege {
-  min-height: 100px;
+  min-height: 10vh;
   display: block;
 }
 
-#span_timer {
-  margin-top: 50px;
-  margin-left: 500px;
-  border: 1px solid;
-  padding-right: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 20px;
-  border-radius: 10px;
-  background-color: coral;
-}
+
 
 #div_number_of_rows {
   margin-top: 20px;
 }
 
-body {
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.5),
-      rgba(255, 255, 255, 0.5)
-    ),
-    url("./images/toy-2561392.jpg");
 
-  background-size: cover;
-  margin-left: 50px;
+@media only screen and (max-width: 600px){
+  #headerDiv{
+    margin-bottom: 3vh;
+  }
+  #game_title {
+    font-size: 6vw;
+    text-align: center;
+    margin-right: 30%;
+  }
+  #span_timer {
+    position: absolute;
+right: 5%;
+    height: fit-content;
+    font-size: 4vw;
+    display: block;
+     /* margin-top: 50px; */
+     /* margin-left: 500px; */
+     /* width: 10%; */
+     border: 1px solid;
+     padding-right: 5px;
+     padding-top: 5px;
+     padding-bottom: 5px;
+     padding-left: 5px;
+     border-radius: 5px;
+    
+   }
+   h2{
+    font-size: medium;
+   }
+
+   #span_player_name {
+    /* padding-top: 10px; */
+    /* margin-block-start: 100px; */
+    border-radius: 5px;
+    align-content: center;
+    border: 1px solid;
+    background-color: aliceblue;
+    font-size: large;
+    width: 35vw;
+    font-size: 2.5vh;
+    margin-left: 0px;
+    /* padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 20px; */
+  }
+
+  #div_playres{
+    display: flex;
+  }
+  #div_number_of_rows {
+    margin-top: 20px;
+    display: flex;
+  }
+
+  .main_buttons {
+    font-size: 3vw;
+  }
+  .changeRowsButton{
+    margin: 0;
+    margin-left: 5VW;
+    /* font-size: 4vw; */
+    width: 30vw;
+   
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2
+  }
+  #span_messege{
+    /* font-size: 1vh; */
+  }
+
+  #span_main_messege{
+    font-size: 4vh;
+  }
+  #span_secondery_messege{
+    font-size: 3vh;
+  }
 }
